@@ -36,6 +36,20 @@ public class JqueryExplorer {
         writeToExcel(tag);
     }
 
+    public String getOutputPath() {
+        File outputDir = new File("output");
+        String canonicalPath = "";
+        try {
+            if (!outputDir.exists()) {
+                outputDir.mkdir();
+            }
+            canonicalPath = outputDir.getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return canonicalPath;
+    }
+
     public void getPluginsInSinglePage(String tag, int page) {
         String url = page == 1 ? "http://plugins.jquery.com/tag/" + tag + "/" : "http://plugins.jquery.com/tag/" + tag + "/page/" + page + "/";
 
@@ -44,9 +58,6 @@ public class JqueryExplorer {
             HttpGet httpget = new HttpGet(url);
             httpget.setConfig(RequestConfig.copy(RequestConfig.DEFAULT).setConnectTimeout(240000).build());
 
-//            System.out.println("Executing request " + httpget.getRequestLine());
-
-            // Create a custom response handler
             ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
 
                 @Override
@@ -65,7 +76,6 @@ public class JqueryExplorer {
             };
             String responseBody = httpclient.execute(httpget, responseHandler);
             System.out.println("----------------------------------------");
-//            System.out.println(responseBody);
             htmlParser(responseBody);
         } catch (ClientProtocolException e) {
             getPluginsInSinglePage(tag, page);
@@ -93,13 +103,13 @@ public class JqueryExplorer {
     }
 
     public void writeToExcel(String tag) {
-        File xlsFile = new File("jquery-" + tag + ".xls");
-        // 创建一个工作簿
+        String filePath = getOutputPath() + File.separator + "jquery-" + tag + ".xls";
+        File xlsFile = new File(filePath);
+
         WritableWorkbook workbook = null;
         try {
             workbook = Workbook.createWorkbook(xlsFile);
 
-            // 创建一个工作表
             WritableSheet sheet = workbook.createSheet("Jquery " + tag, 0);
 
             int row = 0;
@@ -110,7 +120,6 @@ public class JqueryExplorer {
                 row++;
             }
             workbook.write();
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (RowsExceededException e) {
