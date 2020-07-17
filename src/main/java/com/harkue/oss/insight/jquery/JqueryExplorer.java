@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JqueryExplorer {
-    private List<String> plugins = new ArrayList<String>();
+    private final List<String> plugins = new ArrayList<String>();
 
     public void getPlugins(String tag, int pages) {
         for (int i = 1; i <= pages; i++) {
@@ -51,24 +51,28 @@ public class JqueryExplorer {
     }
 
     public void getPluginsInSinglePage(String tag, int page) {
-        String url = page == 1 ? "http://plugins.jquery.com/tag/" + tag + "/" : "http://plugins.jquery.com/tag/" + tag + "/page/" + page + "/";
+        String url = "http://plugins.jquery.com/tag/" + tag + "/";
+        if (page > 1) {
+            url += "page/" + page + "/";
+        }
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpGet httpget = new HttpGet(url);
             httpget.setConfig(RequestConfig.copy(RequestConfig.DEFAULT).setConnectTimeout(240000).build());
 
+            String finalUrl = url;
             ResponseHandler<String> responseHandler = new ResponseHandler<String>() {
 
                 @Override
                 public String handleResponse(
-                        final HttpResponse response) throws ClientProtocolException, IOException {
+                        final HttpResponse response) throws IOException {
                     int status = response.getStatusLine().getStatusCode();
                     if (status >= 200 && status < 300) {
                         HttpEntity entity = response.getEntity();
                         return entity != null ? EntityUtils.toString(entity) : null;
                     } else {
-                        System.out.println("Get failed: " + url);
+                        System.out.println("Get failed: " + finalUrl);
                         throw new ClientProtocolException("Unexpected response status: " + status);
                     }
                 }
@@ -78,9 +82,11 @@ public class JqueryExplorer {
             System.out.println("----------------------------------------");
             htmlParser(responseBody);
         } catch (ClientProtocolException e) {
+            // retry
             getPluginsInSinglePage(tag, page);
             e.printStackTrace();
         } catch (IOException e) {
+            // retry
             getPluginsInSinglePage(tag, page);
             e.printStackTrace();
         } finally {
