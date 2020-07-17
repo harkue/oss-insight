@@ -1,4 +1,4 @@
-# oss-insight
+# Open Source Software Insight
 
 ![Build](https://github.com/harkue/oss-insight/workflows/Build/badge.svg)
 
@@ -6,3 +6,4 @@
 
 
 Open Source Software Insight
+ - Jquery
