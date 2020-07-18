@@ -6,7 +6,7 @@
 
     <groupId>com.huawei.oss-insight</groupId>
     <artifactId>oss-insight</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <build>
         <plugins>
             <plugin>
