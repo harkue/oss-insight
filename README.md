@@ -8,4 +8,7 @@
 
 
 Open Source Software Insight
- - Jquery
+ - Jquery Plugin
+ - Spring [TODO]
+ - Anaconda [TODO]
+ - More and more
