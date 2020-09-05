@@ -1,11 +1,11 @@
 package com.harkue.oss.insight.jquery;
 
+import com.harkue.oss.utils.FileUtils;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
-import jxl.write.biff.RowsExceededException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JqueryExplorer {
-    private final List<String> plugins = new ArrayList<String>();
+    private final List<String> plugins = new ArrayList<>();
 
     public void getPlugins(String tag, int pages) {
         for (int i = 1; i <= pages; i++) {
@@ -34,20 +34,6 @@ public class JqueryExplorer {
         }
 
         writeToExcel(tag);
-    }
-
-    public String getOutputPath() {
-        File outputDir = new File("output");
-        String canonicalPath = "";
-        try {
-            if (!outputDir.exists()) {
-                outputDir.mkdir();
-            }
-            canonicalPath = outputDir.getCanonicalPath();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return canonicalPath;
     }
 
     public void getPluginsInSinglePage(String tag, int page) {
@@ -81,10 +67,6 @@ public class JqueryExplorer {
             String responseBody = httpclient.execute(httpget, responseHandler);
             System.out.println("----------------------------------------");
             htmlParser(responseBody);
-        } catch (ClientProtocolException e) {
-            // retry
-            getPluginsInSinglePage(tag, page);
-            e.printStackTrace();
         } catch (IOException e) {
             // retry
             getPluginsInSinglePage(tag, page);
@@ -109,7 +91,7 @@ public class JqueryExplorer {
     }
 
     public void writeToExcel(String tag) {
-        String filePath = getOutputPath() + File.separator + "jquery-" + tag + ".xls";
+        String filePath = FileUtils.getOutputPath("jquery") + File.separator + "jquery-" + tag + ".xls";
         File xlsFile = new File(filePath);
 
         WritableWorkbook workbook = null;
@@ -126,18 +108,14 @@ public class JqueryExplorer {
                 row++;
             }
             workbook.write();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (RowsExceededException e) {
-            e.printStackTrace();
-        } catch (WriteException e) {
+        } catch (IOException | WriteException e) {
             e.printStackTrace();
         } finally {
             try {
-                workbook.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (WriteException e) {
+                if (workbook != null) {
+                    workbook.close();
+                }
+            } catch (IOException | WriteException e) {
                 e.printStackTrace();
             }
         }
