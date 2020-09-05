@@ -1,4 +1,4 @@
-package com.harkue.oss.downloader;
+package com.harkue.oss.gharchive;
 
 import com.harkue.oss.utils.OssFileUtils;
 import org.apache.commons.io.IOUtils;
