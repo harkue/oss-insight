@@ -8,7 +8,8 @@ import java.io.IOException;
  *
  * @author harkue
  */
-public class FileUtils {
+public class OssFileUtils {
+
     /**
      * get the canonical path under project resource folder
      *

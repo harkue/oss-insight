@@ -1,6 +1,6 @@
 package com.harkue.oss.insight.jquery;
 
-import com.harkue.oss.utils.FileUtils;
+import com.harkue.oss.utils.OssFileUtils;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
@@ -91,7 +91,7 @@ public class JqueryExplorer {
     }
 
     public void writeToExcel(String tag) {
-        String filePath = FileUtils.getOutputPath("jquery") + File.separator + "jquery-" + tag + ".xls";
+        String filePath = OssFileUtils.getOutputPath("jquery") + File.separator + "jquery-" + tag + ".xls";
         File xlsFile = new File(filePath);
 
         WritableWorkbook workbook = null;
