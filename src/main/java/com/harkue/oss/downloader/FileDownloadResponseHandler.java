@@ -24,8 +24,15 @@ public class FileDownloadResponseHandler implements ResponseHandler<File> {
 
     @Override
     public File handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
-        InputStream source = response.getEntity().getContent();
-        FileUtils.copyInputStreamToFile(source, target);
-        return this.target;
+        int statusCode = response.getStatusLine().getStatusCode();
+        if (statusCode == 200) {
+            InputStream source = response.getEntity().getContent();
+            FileUtils.copyInputStreamToFile(source, target);
+            return this.target;
+        } else if (statusCode == 404) {
+            System.out.println(target.getName() + " is not available on GHarchive.org");
+        }
+
+        return null;
     }
 }
