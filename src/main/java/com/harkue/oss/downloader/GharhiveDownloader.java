@@ -53,8 +53,17 @@ public class GharhiveDownloader {
         return OssFileUtils.getOutputPath("gharchive") + File.separator + filename;
     }
 
+    public void downloadAll() {
+        DateTime now = DateTime.now();
+        for (int i = 0; i <= 100000; i++) {
+            DateTime dateTime = now.minusHours(i);
+            String filename = dateTime.toString("yyyy-MM-dd-HH") + ".json.gz";
+            download(filename);
+        }
+    }
+
     public static void main(String[] args) {
-        DateTime dateTime = new DateTime(2015, 1, 1, 15, 0);
+        DateTime dateTime = new DateTime(2020, 9, 1, 15, 0);
         String filename = dateTime.toString("yyyy-MM-dd-HH") + ".json.gz";
         System.out.println(filename);
 
