@@ -8,6 +8,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultProxyRoutePlanner;
+import org.joda.time.DateTime;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,8 +54,12 @@ public class GharhiveDownloader {
     }
 
     public static void main(String[] args) {
+        DateTime dateTime = new DateTime(2015, 1, 1, 15, 0);
+        String filename = dateTime.toString("yyyy-MM-dd-HH") + ".json.gz";
+        System.out.println(filename);
+
         // https://data.gharchive.org/2015-01-01-15.json.gz
         GharhiveDownloader downloader = new GharhiveDownloader();
-        downloader.download("2015-01-01-15.json.gz");
+        downloader.download(filename);
     }
 }
