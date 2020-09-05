@@ -3,7 +3,6 @@ package com.harkue.oss.downloader;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 
 import java.io.File;
@@ -23,7 +22,7 @@ public class FileDownloadResponseHandler implements ResponseHandler<File> {
     }
 
     @Override
-    public File handleResponse(HttpResponse response) throws ClientProtocolException, IOException {
+    public File handleResponse(HttpResponse response) throws IOException {
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode == 200) {
             InputStream source = response.getEntity().getContent();
