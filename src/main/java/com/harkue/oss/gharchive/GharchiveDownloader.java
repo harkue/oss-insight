@@ -18,7 +18,7 @@ import java.io.IOException;
  *
  * @author harkue
  */
-public class GharhiveDownloader {
+public class GharchiveDownloader {
     public static final String GHARCHIVE_BASE_URL = "https://data.gharchive.org/";
 
     public void download(String filename) {
@@ -68,7 +68,7 @@ public class GharhiveDownloader {
         System.out.println(filename);
 
         // https://data.gharchive.org/2015-01-01-15.json.gz
-        GharhiveDownloader downloader = new GharhiveDownloader();
+        GharchiveDownloader downloader = new GharchiveDownloader();
         downloader.download(filename);
     }
 }
