@@ -3,15 +3,9 @@ package com.harkue.oss.ghtorrent;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.usermodel.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,8 +47,6 @@ public class GhTorrentCsvParser {
     public void parse() {
         String filepath = "";
         try {
-            int n = 0;
-
             CSVParser csvFileParser = CSVFormat.DEFAULT.parse(new FileReader(new File(filepath)));
             for (CSVRecord record : csvFileParser) {
                 GTProject project = new GTProject();
@@ -77,13 +69,39 @@ public class GhTorrentCsvParser {
                     software.setProjectId(project.getId());
                     software.setProject(project);
 
-                    System.out.println(software);
-                }
-
-                if (n++ >= 10) {
-                    break;
+                    System.out.println(software.getName() + "=" + project.getId());
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void writeToExcel() {
+        String inputFile = "";
+
+        try (FileInputStream input = new FileInputStream(inputFile)) {
+            Workbook wb = WorkbookFactory.create(input);
+
+            Sheet sheet = wb.getSheetAt(1);
+            int lastRow = sheet.getLastRowNum();
+            for (int i = 1; i <= lastRow; i++) {
+                Row row = sheet.getRow(i);
+
+                String apiUrl = row.getCell(5).getStringCellValue();
+                GTSoftware software = map.get(apiUrl);
+
+                Cell cell = row.createCell(row.getLastCellNum());
+                cell.setCellValue(software.getProjectId());
+
+                cell = row.createCell(row.getLastCellNum());
+                cell.setCellValue(software.getProject().getOwnerId());
+            }
+
+            String outputFile = "";
+            FileOutputStream outputStream = new FileOutputStream(new File(outputFile));
+            wb.write(outputStream);
+            outputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
