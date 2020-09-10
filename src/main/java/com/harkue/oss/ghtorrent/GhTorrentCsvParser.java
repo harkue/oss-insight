@@ -47,7 +47,7 @@ public class GhTorrentCsvParser {
     public void parse() {
         String filepath = "";
         try {
-            CSVParser csvFileParser = CSVFormat.DEFAULT.parse(new FileReader(new File(filepath)));
+            CSVParser csvFileParser = CSVFormat.ORACLE.parse(new FileReader(new File(filepath)));
             for (CSVRecord record : csvFileParser) {
                 GTProject project = new GTProject();
                 project.setId(record.get(0));
