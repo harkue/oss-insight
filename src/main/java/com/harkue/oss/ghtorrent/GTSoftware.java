@@ -11,6 +11,7 @@ public class GTSoftware {
     private String repoUrl;
     private String repoApiUrl;
     private String projectId;
+    private GTProject project;
 
     public String toString() {
         return String.format("name = %s, software_no = %s, version = %s, version_no = %s, repo_url = %s, repo_api_url = %s, project_id = %s", name, softwareNo, version, versionNo, repoUrl, repoApiUrl, projectId);

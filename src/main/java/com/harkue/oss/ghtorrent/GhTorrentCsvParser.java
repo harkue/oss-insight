@@ -32,7 +32,7 @@ public class GhTorrentCsvParser {
 
             Sheet sheet = wb.getSheetAt(1);
             int lastRow = sheet.getLastRowNum();
-            for (int i = 0; i < lastRow; i++) {
+            for (int i = 1; i <= lastRow; i++) {
                 Row row = sheet.getRow(i);
 
                 GTSoftware software = new GTSoftware();
@@ -70,6 +70,15 @@ public class GhTorrentCsvParser {
                 project.setUpdatedAt(record.get(9));
 
                 System.out.println(project.toString());
+
+                String key = project.getUrl();
+                GTSoftware software = map.get(key);
+                if(software != null) {
+                    software.setProjectId(project.getId());
+                    software.setProject(project);
+
+                    System.out.println(software);
+                }
 
                 if (n++ >= 10) {
                     break;
