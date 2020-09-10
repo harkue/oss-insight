@@ -9,7 +9,7 @@
         <poi.version>4.1.2</poi.version>
     </properties>
 
-    <groupId>com.huawei.oss-insight</groupId>
+    <groupId>com.harkue.oss-insight</groupId>
     <artifactId>oss-insight</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <build>
